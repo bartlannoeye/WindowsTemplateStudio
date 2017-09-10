@@ -9,8 +9,8 @@ namespace WTSPrism.Views
     {
         public Order MasterMenuItem
         {
-            get { return GetValue(MasterMenuItemProperty) as Order; }
-            set { SetValue(MasterMenuItemProperty, value); }
+            get => GetValue(MasterMenuItemProperty) as Order;
+            set => SetValue(MasterMenuItemProperty, value);
         }
 
         public static DependencyProperty MasterMenuItemProperty = DependencyProperty.Register("MasterMenuItem",typeof(Order),typeof(MasterDetailDetailControl),new PropertyMetadata(null));

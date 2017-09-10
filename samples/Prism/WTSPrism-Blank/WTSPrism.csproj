@@ -123,6 +123,7 @@
     <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Services\ILocationService.cs" />
+    <Compile Include="Services\ISampleDataService.cs" />
     <Compile Include="Services\IWebViewService.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\SampleDataService.cs" />

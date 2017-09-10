@@ -1,13 +1,10 @@
+using System.Collections.Generic;
+using System.Windows.Input;
+using Windows.ApplicationModel;
+using WTSPrism.Services;
 using Prism.Commands;
 using Prism.Windows.Mvvm;
-using System;
-using System.Windows.Input;
-
-using Windows.ApplicationModel;
-
-using WTSPrism.Services;
 using Prism.Windows.Navigation;
-using System.Collections.Generic;
 
 namespace WTSPrism.ViewModels
 {
@@ -28,7 +25,7 @@ namespace WTSPrism.ViewModels
             set { SetProperty(ref _appDescription, value); }
         }
 
-        public ICommand SwitchThemeCommand { get; private set; }
+        public ICommand SwitchThemeCommand { get; }
 
         public SettingsPageViewModel()
         {

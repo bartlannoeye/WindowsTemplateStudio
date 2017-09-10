@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace WTSPrism.Services
@@ -52,15 +48,9 @@ namespace WTSPrism.Services
             _webView?.GoBack();
         }
 
-        public bool CanGoForward
-        {
-            get { return _webView?.CanGoForward == true; }
-        }
+        public bool CanGoForward => _webView?.CanGoForward == true;
 
-        public bool CanGoBack
-        {
-            get { return _webView?.CanGoBack == true; }
-        }
+        public bool CanGoBack => _webView?.CanGoBack == true;
 
         public event EventHandler<WebViewNavigationCompletedEventArgs> NavigationComplete;
 

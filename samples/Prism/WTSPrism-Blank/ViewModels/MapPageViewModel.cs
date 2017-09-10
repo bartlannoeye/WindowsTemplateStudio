@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
+using System.Collections.ObjectModel;
 using Prism.Windows.Mvvm;
 using Prism.Windows.Navigation;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;
-
 using WTSPrism.Helpers;
 using WTSPrism.Services;
-using System.Collections.ObjectModel;
 
 namespace WTSPrism.ViewModels
 {
@@ -21,7 +17,7 @@ namespace WTSPrism.ViewModels
         // TODO WTS: Set your preferred default zoom level
         private const double defaultZoomLevel = 17;
 
-        private readonly ILocationService locationService;
+        private readonly ILocationService _locationService;
 
         // TODO WTS: Set your preferred default location if a geolock can't be found.
         private readonly BasicGeoposition defaultPosition = new BasicGeoposition()
@@ -30,11 +26,11 @@ namespace WTSPrism.ViewModels
             Longitude = -122.3417
         };
 
-        private string mapServiceToken;
+        private string _mapServiceToken;
         public string MapServiceToken
         {
-            get { return mapServiceToken; }
-            set { SetProperty(ref mapServiceToken, value); }
+            get { return _mapServiceToken; }
+            set { SetProperty(ref _mapServiceToken, value); }
         }
 
         private double _zoomLevel;
@@ -60,7 +56,7 @@ namespace WTSPrism.ViewModels
 
         public MapPageViewModel(ILocationService locationService)
         {
-            this.locationService = locationService;
+            _locationService = locationService;
             Center = new Geopoint(defaultPosition);
             ZoomLevel = defaultZoomLevel;
 
@@ -68,23 +64,23 @@ namespace WTSPrism.ViewModels
             MapServiceToken = "";
         }
 
-        public async override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override async void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
         {
             base.OnNavigatedTo(e, viewModelState);
-            if (locationService != null)
+            if (_locationService != null)
             {
-                locationService.PositionChanged += LocationServicePositionChanged;
+                _locationService.PositionChanged += LocationServicePositionChanged;
 
-                var initializationSuccessful = await locationService.InitializeAsync();
+                var initializationSuccessful = await _locationService.InitializeAsync();
 
                 if (initializationSuccessful)
                 {
-                    await locationService.StartListeningAsync();
+                    await _locationService.StartListeningAsync();
                 }
 
-                if (initializationSuccessful && locationService.CurrentPosition != null)
+                if (initializationSuccessful && _locationService.CurrentPosition != null)
                 {
-                    Center = locationService.CurrentPosition.Coordinate.Point;
+                    Center = _locationService.CurrentPosition.Coordinate.Point;
                 }
                 else
                 {
@@ -106,10 +102,10 @@ namespace WTSPrism.ViewModels
         public override void OnNavigatingFrom(NavigatingFromEventArgs e, Dictionary<string, object> viewModelState, bool suspending)
         {
             base.OnNavigatingFrom(e, viewModelState, suspending);
-            if (locationService != null)
+            if (_locationService != null)
             {
-                locationService.PositionChanged -= LocationServicePositionChanged;
-                locationService.StopListening();
+                _locationService.PositionChanged -= LocationServicePositionChanged;
+                _locationService.StopListening();
             }
         }
 

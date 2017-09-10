@@ -1,12 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml;
-
 using Microsoft.Practices.Unity;
 using Prism.Unity.Windows;
 using Prism.Windows.AppModel;
+using WTSPrism.Constants;
+using WTSPrism.Services;
 
 namespace WTSPrism
 {
@@ -26,14 +25,16 @@ namespace WTSPrism
 
         protected override Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            // if this list gets to long, separate into an "ApplicationBootstrapper".
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+            Container.RegisterType<ISampleDataService, SampleDataService>();
             return base.OnInitializeAsync(args);
         }
 
         protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
         {
-            NavigationService.Navigate("Blank", null);
-            return Task.FromResult(true);
+            NavigationService.Navigate(PageTokens.BlankPage, null);
+            return Task.CompletedTask;
         }
     }
 }
