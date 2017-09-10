@@ -1,9 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml;
-
 using Microsoft.Practices.Unity;
 using Prism.Unity.Windows;
 using Prism.Windows.AppModel;
@@ -31,7 +28,7 @@ namespace WTSPrism
             Container.RegisterType<ILocationService, LocationService>(new ContainerControlledLifetimeManager());
         }
 
-        protected async override Task OnInitializeAsync(IActivatedEventArgs args)
+        protected override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
             RegisterTypes();
             await ThemeSelectorService.InitializeAsync();

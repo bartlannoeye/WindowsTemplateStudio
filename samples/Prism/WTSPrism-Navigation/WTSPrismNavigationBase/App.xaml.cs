@@ -1,20 +1,13 @@
-using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
-
 using Microsoft.Practices.Unity;
 using Prism.Unity.Windows;
 using Prism.Windows.AppModel;
-using Prism.Mvvm;
-using System.Globalization;
 using Windows.UI.Xaml.Controls;
 using Prism.Windows.Navigation;
-using WTSPrismNavigationBase.Interfaces;
 using WTSPrismNavigationBase.Views;
-using Microsoft.Toolkit.Uwp.UI.Controls;
-using WTSPrismNavigationBase.ViewModels;
 using WTSPrismNavigationBase.Services;
 
 namespace WTSPrismNavigationBase
@@ -24,8 +17,7 @@ namespace WTSPrismNavigationBase
     /// </summary>
     sealed partial class App : PrismUnityApplication
     {
-
-        protected async override Task OnInitializeAsync(IActivatedEventArgs args)
+        protected override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
             RegisterTypes();
             await ThemeSelectorService.InitializeAsync();
@@ -56,7 +48,7 @@ namespace WTSPrismNavigationBase
 
             NavigationService.Navigate("Main", null);
             Window.Current.Activate();
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
     }
 }

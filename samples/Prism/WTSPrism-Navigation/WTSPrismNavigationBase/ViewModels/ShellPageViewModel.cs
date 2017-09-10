@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-
 using Prism.Windows.Mvvm;
 using Prism.Commands;
-
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-
 using WTSPrismNavigationBase.Helpers;
-using WTSPrismNavigationBase.Services;
 using WTSPrismNavigationBase.Views;
 using Prism.Windows.Navigation;
-using WTSPrismNavigationBase.Interfaces;
 
 namespace WTSPrismNavigationBase.ViewModels
 {
@@ -25,11 +18,15 @@ namespace WTSPrismNavigationBase.ViewModels
         private const string NarrowStateName = "NarrowState";
         private const double WideStateMinWindowWidth = 640;
         private const double PanoramicStateMinWindowWidth = 1024;
-        private INavigationService _navService;
+        private readonly INavigationService _navigationService;
 
-        public ShellPageViewModel(INavigationService navigationService):base()
+        public ShellPageViewModel(INavigationService navigationService)
         {
-            _navService = navigationService;
+            _navigationService = navigationService;
+
+            OpenPaneCommand = new DelegateCommand(() => IsPaneOpen = !_isPaneOpen);
+            ItemSelectedCommand = new DelegateCommand<ItemClickEventArgs>(ItemSelected);
+            StateChangedCommand = new DelegateCommand<VisualStateChangedEventArgs>(args => GoToState(args.NewState.Name));
         }
 
         private bool _isPaneOpen;
@@ -63,47 +60,9 @@ namespace WTSPrismNavigationBase.ViewModels
             set { SetProperty(ref _secondaryItems, value); }
         }
 
-        private ICommand _openPaneCommand;
-        public ICommand OpenPaneCommand
-        {
-            get
-            {
-                if (_openPaneCommand == null)
-                {
-                    _openPaneCommand = new DelegateCommand(() => IsPaneOpen = !_isPaneOpen);
-                }
-
-                return _openPaneCommand;
-            }
-        }
-
-        private ICommand _itemSelected;
-        public ICommand ItemSelectedCommand
-        {
-            get
-            {
-                if (_itemSelected == null)
-                {
-                    _itemSelected = new DelegateCommand<ItemClickEventArgs>(ItemSelected);
-                }
-
-                return _itemSelected;
-            }
-        }
-
-        private ICommand _stateChangedCommand;
-        public ICommand StateChangedCommand
-        {
-            get
-            {
-                if (_stateChangedCommand == null)
-                {
-                    _stateChangedCommand = new DelegateCommand<Windows.UI.Xaml.VisualStateChangedEventArgs>(args => GoToState(args.NewState.Name));
-                }
-
-                return _stateChangedCommand;
-            }
-        }
+        public ICommand OpenPaneCommand { get; }
+        public ICommand ItemSelectedCommand { get; }
+        public ICommand StateChangedCommand { get; }
 
         private void GoToState(string stateName)
         {
@@ -184,7 +143,6 @@ namespace WTSPrismNavigationBase.ViewModels
         {
             if (e != null)
             {
-
                 ChangeSelected(_lastSelectedItem, _currentSelectedItem);
             }
         }
@@ -206,7 +164,7 @@ namespace WTSPrismNavigationBase.ViewModels
             var navigationItem = item as ShellNavigationItem;
             if (navigationItem != null)
             {
-                _navService.Navigate(navigationItem.PageIdentifier, null);
+                _navigationService.Navigate(navigationItem.PageIdentifier, null);
             }
         }
     }
