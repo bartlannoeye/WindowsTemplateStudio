@@ -19,12 +19,12 @@ namespace WTSPrismNavigationBase
     {
         protected override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
-            RegisterTypes();
             await ThemeSelectorService.InitializeAsync();
         }
 
-        private void RegisterTypes()
+        protected override void ConfigureContainer()
         {
+            base.ConfigureContainer();
             Container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
             Container.RegisterType<ILocationService, LocationService>(new ContainerControlledLifetimeManager());
         }
